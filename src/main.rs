@@ -110,7 +110,6 @@ fn run_task(name: &str) {
     file.read_to_string(&mut contents).expect("Unable to read task file");
     let task: Task = serde_json::from_str(&contents).expect("Unable to parse task file");
 
-    // Execute each job in sequence
     for job in task.jobs {
         println!("Executing job: {}", job.name);
         let mut parts = job.command.split_whitespace();
@@ -131,23 +130,19 @@ fn run_task(name: &str) {
 }
 
 fn create_task(name: &str, yaml_path: &str) {
-    // Read and parse the YAML file
     let mut file = File::open(yaml_path).expect("Unable to open YAML file");
     let mut contents = String::new();
     file.read_to_string(&mut contents).expect("Unable to read YAML file");
     let jobs: Vec<Job> = serde_yaml::from_str(&contents).expect("Unable to parse YAML file");
 
-    // Create the task
     let task = Task {
         name: name.to_string(),
         jobs,
     };
 
-    // Save the task to a file
     let file_path = format!("{}.json", name);
     save_task(&file_path, &task);
 
-    // Print the task to confirm creation
     println!("Created task: {:?}", task);
 }
 
@@ -158,10 +153,8 @@ fn save_task(file_path: &str, task: &Task) {
 }
 
 fn delete_task(name: &str) {
-    // Define the path to the task file
     let file_path = format!("{}.json", name);
 
-    // Check if the file exists and delete it
     if Path::new(&file_path).exists() {
         match fs::remove_file(&file_path) {
             Ok(_) => println!("Task '{}' deleted successfully.", name),
@@ -173,7 +166,6 @@ fn delete_task(name: &str) {
 }
 
 fn list_tasks() {
-    // Read the current directory and list all .json files
     let paths = fs::read_dir(".").expect("Unable to read directory");
 
     let mut tasks = Vec::new();
@@ -186,7 +178,6 @@ fn list_tasks() {
         }
     }
 
-    // Print the list of tasks
     if tasks.is_empty() {
         println!("No tasks found.");
     } else {
@@ -198,28 +189,23 @@ fn list_tasks() {
 }
 
 fn update_task(name: &str, yaml_path: &str) {
-    // Check if the task exists
     let file_path = format!("{}.json", name);
     if !Path::new(&file_path).exists() {
         eprintln!("Error: Task '{}' does not exist.", name);
         exit(1);
     }
 
-    // Read and parse the YAML file
     let mut file = File::open(yaml_path).expect("Unable to open YAML file");
     let mut contents = String::new();
     file.read_to_string(&mut contents).expect("Unable to read YAML file");
     let jobs: Vec<Job> = serde_yaml::from_str(&contents).expect("Unable to parse YAML file");
 
-    // Update the task
     let task = Task {
         name: name.to_string(),
         jobs,
     };
 
-    // Save the updated task to the file
     save_task(&file_path, &task);
 
-    // Print the task to confirm update
     println!("Updated task: {:?}", task);
 }
