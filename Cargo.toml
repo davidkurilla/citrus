@@ -2,7 +2,7 @@
 name = "citrus-cli"
 version = "0.1.0"
 edition = "2021"
-license = "MIT License"
+license = "MIT"
 license_file = "LICENSE"
 description = "A simple task managing tool that can be configured with YAML files"
 repository = "https://github.com/davidkurilla/citrus"
