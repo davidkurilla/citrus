@@ -1,6 +1,6 @@
 # Contributing to Citrus
 
-First off, thank you for considering contributing to Citrus! Your help is greatly appreciated.
+First off, thank you for considering contributing to citrus! Your help is greatly appreciated.
 
 ## Table of Contents
 
@@ -27,11 +27,11 @@ If you find a bug, please open an issue [here](https://github.com/davidkurilla/c
 - A clear and descriptive title.
 - A description of the problem, including steps to reproduce the issue.
 - Any relevant screenshots or logs.
-- Your environment (OS, browser, Node.js version, etc.).
+- Your environment (OS, browser, rust version, etc.).
 
 ### Suggesting Enhancements
 
-We welcome suggestions to improve Citrus! To suggest an enhancement, please:
+We welcome suggestions to improve citrus! To suggest an enhancement, please:
 
 1. Check if the enhancement has already been suggested by searching the issues.
 2. If not, open a new issue with the following details:
@@ -79,4 +79,4 @@ git clone https://github.com/davidkurilla/citrus
 cargo run -- args
 ```
 
-Thank you for contributing to Citrus!
+Thank you for contributing to citrus!
