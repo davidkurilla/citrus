@@ -13,7 +13,6 @@ First off, thank you for considering contributing to Citrus! Your help is greatl
     - [Git Commit Messages](#git-commit-messages)
     - [Code Style](#code-style)
 4. [Getting Started](#getting-started)
-5. [Additional Resources](#additional-resources)
 
 ## Code of Conduct
 
