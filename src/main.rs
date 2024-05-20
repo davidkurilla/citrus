@@ -18,7 +18,7 @@ struct Task {
 }
 
 fn main() {
-    let matches = App::new("Task Automation Tool")
+    let matches = App::new("citrus")
         .version("1.0")
         .author("David Kurilla")
         .about("A simple task automation tool")
@@ -91,7 +91,7 @@ fn main() {
             update_task(name, yaml_path);
         }
         _ => {
-            println!("Welcome to Citrus!");
+            println!("Welcome to citrus!");
         }
     }
 }
