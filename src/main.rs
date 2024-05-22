@@ -4,6 +4,7 @@ use std::fs::{self, File};
 use std::io::{Read, Write};
 use std::path::Path;
 use std::process::{Command, exit};
+use toml::Value;
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Job {
@@ -98,7 +99,14 @@ fn main() {
 
 fn run_task(name: &str) {
     // Load the task from the JSON file
-    let file_path = format!("{}.json", name);
+    let output_directory = match get_config_file() {
+        Ok(dir) => dir,
+        Err(e) => {
+            eprintln!("Error getting config file: {}", e);
+            return;
+        }
+    };
+    let file_path = format!("{}/{}.json", output_directory, name);
     let mut file = match File::open(&file_path) {
         Ok(file) => file,
         Err(err) => {
@@ -140,7 +148,15 @@ fn create_task(name: &str, yaml_path: &str) {
         jobs,
     };
 
-    let file_path = format!("{}.json", name);
+    let output_directory = match get_config_file() {
+        Ok(dir) => dir,
+        Err(e) => {
+            eprintln!("Error getting config file: {}", e);
+            return;
+        }
+    };
+
+    let file_path = format!("{}/{}.json", output_directory, name);
     save_task(&file_path, &task);
 
     println!("Created task: {:?}", task);
@@ -153,7 +169,14 @@ fn save_task(file_path: &str, task: &Task) {
 }
 
 fn delete_task(name: &str) {
-    let file_path = format!("{}.json", name);
+    let output_directory = match get_config_file() {
+        Ok(dir) => dir,
+        Err(e) => {
+            eprintln!("Error getting config file: {}", e);
+            return;
+        }
+    };
+    let file_path = format!("{}/{}.json", output_directory, name);
 
     if Path::new(&file_path).exists() {
         match fs::remove_file(&file_path) {
@@ -166,7 +189,14 @@ fn delete_task(name: &str) {
 }
 
 fn list_tasks() {
-    let paths = fs::read_dir(".").expect("Unable to read directory");
+    let output_directory = match get_config_file() {
+        Ok(dir) => dir,
+        Err(e) => {
+            eprintln!("Error getting config file: {}", e);
+            return;
+        }
+    };
+    let paths = fs::read_dir(output_directory).expect("Unable to read directory");
 
     let mut tasks = Vec::new();
     for path in paths {
@@ -189,7 +219,14 @@ fn list_tasks() {
 }
 
 fn update_task(name: &str, yaml_path: &str) {
-    let file_path = format!("{}.json", name);
+    let output_directory = match get_config_file() {
+        Ok(dir) => dir,
+        Err(e) => {
+            eprintln!("Error getting config file: {}", e);
+            return;
+        }
+    };
+    let file_path = format!("{}/{}.json", output_directory, name);
     if !Path::new(&file_path).exists() {
         eprintln!("Error: Task '{}' does not exist.", name);
         exit(1);
@@ -208,4 +245,16 @@ fn update_task(name: &str, yaml_path: &str) {
     save_task(&file_path, &task);
 
     println!("Updated task: {:?}", task);
+}
+
+fn get_config_file() -> Result<String, &'static str> {
+    let mut config_file = File::open("citrus-config.toml").expect("Could not locate 'citrus-config.toml' in the current directory");
+    let mut contents = String::new();
+    config_file.read_to_string(&mut contents).expect("Could not read file!");
+    let value: Value = toml::from_str(&contents).expect("Could not parse TOML file!");
+    if let Some(task_directory) = value.get("config").and_then(|config| config.get("task_directory")).and_then(|v| v.as_str()) {
+        Ok(task_directory.to_string())
+    } else {
+        Err("Could not find 'task_directory' key in TOML file or it is not a string")
+    }
 }
