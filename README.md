@@ -17,6 +17,16 @@ cargo install citrus-cli
 ## Using citrus-cli
 Using citrus-cli is easy. Simply invoke the program using the command `citrus-cli`.
 
+### Configuring citrus-cli
+Before you can utilize `citrus-cli`'s task management features, you must configure it by creating a `citrus-config.toml` file.
+Start by creating a file in your project root directory called `citrus-config.toml`.
+Complete the file so that it looks like this:
+```toml
+[config]
+task_directory = "path/to/desired/directory"
+```
+Save the file and now you may use `citrus-cli`.
+
 ### Creating a task
 Create a task by setting up a YAML file. Tasks are a list of jobs that can be represented in the following format
 ```yaml
