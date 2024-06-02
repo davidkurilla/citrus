@@ -61,7 +61,11 @@ impl InputData {
 pub fn run_migration(toml_file_path: std::path::PathBuf, toml_table: String) {
 
     let toml_file = toml_file_path;
-    let table_name = toml_table;
+    let table_name = if !toml_table.is_empty() {
+        toml_table
+    } else {
+        String::from("database")
+    };
 
     let toml_contents = match std::fs::read_to_string(toml_file) {
         Ok(contents) => contents,

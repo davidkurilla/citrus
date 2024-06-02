@@ -49,6 +49,14 @@ fn main() {
                     .required(true)
                     .index(2))
         )
+        .subcommand(
+            SubCommand::with_name("migrations")
+                .about("Run diesel migrations")
+                .arg(Arg::with_name("table-name"))
+                    .help("Specify table name in 'citrus-config.json' file to run migrations. Defaults to 'database'")
+                    .required(false)
+                    .index(1)
+        )
         .get_matches();
 
     match matches.subcommand() {
@@ -72,6 +80,10 @@ fn main() {
             let name = sub_m.value_of("name").unwrap();
             let yaml_path = sub_m.value_of("yaml").unwrap();
             citrus_core::update_task(name, yaml_path);
+        }
+        Some(("migrations", sub_m)) => {
+            let table_name = sub_m.value_of("table-name").unwrap();
+            citrus_migrations::run_migration("citrus-config.json", table_name);
         }
         _ => {
             println!("Welcome to citrus!");
