@@ -4,7 +4,11 @@ version = "0.1.0"
 edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+description = "A library of database migration functions for citrus."
+repository = "https://github.com/davidkurilla/citrus"
+readme = "../../docs/README.md"
 
 [dependencies]
+diesel = { version = "2.1.6", features = ["postgres"] }
+diesel_migrations = "2.1.0"
+toml = "0.5"
