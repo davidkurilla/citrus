@@ -83,7 +83,7 @@ fn main() {
         }
         Some(("migrations", sub_m)) => {
             let table_name = sub_m.value_of("table-name").unwrap();
-            citrus_migrations::run_migration("citrus-config.json", table_name);
+            citrus_migrations::run_migration("citrus-config.json".into(), table_name.to_string());
         }
         _ => {
             println!("Welcome to citrus!");
