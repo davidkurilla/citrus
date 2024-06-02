@@ -52,10 +52,10 @@ fn main() {
         .subcommand(
             SubCommand::with_name("migrations")
                 .about("Run diesel migrations")
-                .arg(Arg::with_name("table-name"))
+                .arg(Arg::with_name("table-name")
                     .help("Specify table name in 'citrus-config.json' file to run migrations. Defaults to 'database'")
                     .required(false)
-                    .index(1)
+                    .index(1))
         )
         .get_matches();
 
