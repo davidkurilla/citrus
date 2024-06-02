@@ -53,7 +53,7 @@ fn main() {
             SubCommand::with_name("migrations")
                 .about("Run diesel migrations")
                 .arg(Arg::with_name("table-name")
-                    .help("Specify table name in 'citrus-config.json' file to run migrations. Defaults to 'database'")
+                    .help("Specify table name in 'citrus-config.toml' file to run migrations. Defaults to 'database'")
                     .required(false)
                     .index(1))
         )
