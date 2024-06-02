@@ -8,3 +8,6 @@ license.workspace = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+diesel = { version = "2.1.6", features = ["postgres"] }
+diesel_migrations = "2.1.0"
+toml = "0.5"
