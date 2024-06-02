@@ -6,7 +6,7 @@ rust-version.workspace = true
 license.workspace = true
 description = "A library of simple task managing functions."
 repository = "https://github.com/davidkurilla/citrus"
-readme = "../../README.md"
+readme = "../../docs/README.md"
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
