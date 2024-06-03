@@ -10,5 +10,5 @@ readme = "../../docs/README.md"
 
 [dependencies]
 clap = "3"
-citrus-core = "0.1.1"
+citrus-core = "0.1.2"
 citrus-migrations = "0.1.1"
