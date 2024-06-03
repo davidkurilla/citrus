@@ -57,6 +57,10 @@ fn main() {
                     .required(false)
                     .index(1))
         )
+        .subcommand(
+            SubCommand::with_name("init")
+                .about("Initializes new citrus project")
+        )
         .get_matches();
 
     match matches.subcommand() {
@@ -84,6 +88,9 @@ fn main() {
         Some(("migrations", sub_m)) => {
             let table_name = sub_m.value_of("table-name").unwrap();
             citrus_migrations::run_migration("citrus-config.toml".into(), table_name.to_string());
+        }
+        Some("init") => {
+            citrus_core::init();
         }
         _ => {
             println!("Welcome to citrus!");

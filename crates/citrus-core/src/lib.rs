@@ -186,6 +186,28 @@ fn get_config_file() -> Result<String, &'static str> {
     }
 }
 
+// Init
+pub fn init() {
+
+    let file_data = "[config]\n
+    task_directory = \".citrus\"";
+
+    let _config_file = match File::open("citrus-config.toml") {
+        Ok(_file) => {
+            println!("'citrus-config.toml' file found. Project already initialized.");
+            return;
+        }
+        Err(_) => {
+            let mut file = File::create("citrus-config.toml").expect("Cannot create 'citrus-config.toml'");
+            file.write_all(file_data.as_bytes()).expect("Cannot write to 'citrus-config.toml'");
+            let _dir = std::fs::create_dir(".citrus");
+            file
+        }
+    };
+
+    println!("Project successfully initialized!");
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
