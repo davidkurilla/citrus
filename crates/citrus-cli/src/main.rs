@@ -89,7 +89,7 @@ fn main() {
             let table_name = sub_m.value_of("table-name").unwrap();
             citrus_migrations::run_migration("citrus-config.toml".into(), table_name.to_string());
         }
-        Some("init") => {
+        Some(("init", _sub_m)) => {
             citrus_core::init();
         }
         _ => {
