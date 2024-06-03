@@ -189,7 +189,7 @@ fn get_config_file() -> Result<String, &'static str> {
 // Init
 pub fn init() {
 
-    let file_data = "[config]\ntask_directory =\".citrus\"";
+    let file_data = "[config]\ntask_directory = \".citrus\"";
 
     let _config_file = match File::open("citrus-config.toml") {
         Ok(_file) => {
