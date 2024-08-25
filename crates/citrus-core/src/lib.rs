@@ -5,20 +5,23 @@ use std::path::Path;
 use std::process::{Command, exit};
 use toml::Value;
 
+// Job Struct
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Job {
     name: String,
     command: String,
 }
 
+// Task Struct
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Task {
     name: String,
     jobs: Vec<Job>,
 }
 
-// Run Task
+// Run Task Function
 pub fn run_task(name: &str) {
+    
     // Load the task from the JSON file
     let output_directory = match get_config_file() {
         Ok(dir) => dir,
@@ -27,6 +30,8 @@ pub fn run_task(name: &str) {
             return;
         }
     };
+
+    // Get File path and file
     let file_path = format!("{}/{}.json", output_directory, name);
     let mut file = match File::open(&file_path) {
         Ok(file) => file,
@@ -35,10 +40,15 @@ pub fn run_task(name: &str) {
             exit(1);
         }
     };
+
+    // Get file contents
     let mut contents = String::new();
     file.read_to_string(&mut contents).expect("Unable to read task file");
+    
+    // Create Task
     let task: Task = serde_json::from_str(&contents).expect("Unable to parse task file");
 
+    // Create iterate through Task and execute Jobs
     for job in task.jobs {
         println!("Executing job: {}", job.name);
         let mut parts = job.command.split_whitespace();
@@ -114,6 +124,8 @@ pub fn delete_task(name: &str) {
 
 // List Tasks
 pub fn list_tasks() {
+    
+    // Get Config File
     let output_directory = match get_config_file() {
         Ok(dir) => dir,
         Err(e) => {
@@ -152,12 +164,14 @@ pub fn update_task(name: &str, yaml_path: &str) {
             return;
         }
     };
+    // Check if Task exists
     let file_path = format!("{}/{}.json", output_directory, name);
     if !Path::new(&file_path).exists() {
         eprintln!("Error: Task '{}' does not exist.", name);
         exit(1);
     }
 
+    // Create and Save new Task
     let mut file = File::open(yaml_path).expect("Unable to open YAML file");
     let mut contents = String::new();
     file.read_to_string(&mut contents).expect("Unable to read YAML file");
